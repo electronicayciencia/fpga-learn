@@ -19,10 +19,10 @@ module debounce (clk,i,st_o,up_o,dn_o);
 	always @(i) counter = 0;
 
 	always @(posedge clk) begin
-		st_old = st;
-		if (i != st) counter = counter + 1;
+		st_old <= st;
+		if (i != st) counter <= counter + 1;
 		if (counter == stable) begin
-			st = i;
+			st <= i;
 		end
 	end
 
