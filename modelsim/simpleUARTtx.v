@@ -21,13 +21,12 @@ assign even = ^data;       // parity of data byte
 always @ (posedge clk) begin
 	if (busy) begin 
 		shiftreg <= {1'b1, shiftreg[11:1]};
-		counter <= counter - 1;
+		counter <= counter - 1'b1;
 	end
-end
-
-always @ (posedge start) begin
-	shiftreg <= {1'b1, even, data[7:0], 1'b0, 1'b1};
-	counter <= 4'd12;
+    else if (start) begin
+        shiftreg <= {1'b1, even, data[7:0], 1'b0, 1'b1};
+        counter <= 4'd12;
+    end
 end
 
 endmodule

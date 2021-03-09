@@ -17,13 +17,14 @@ initial begin
 end
 
 
-initial begin
-	data = 8'b00000001;
-	#25;
+always @ (negedge busy) begin
+	data = data + 1'b1;
 
+	#5
 	start = 1;
-	#10;
+	#20; // must stay on for a clock cycle
 	start = 0;
+	
 end
 
 
