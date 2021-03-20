@@ -18,12 +18,16 @@
 */
 
 module display (
-    input clk,reset,
+    input clk,btn_a,btn_b,
     output a,b,c,d,e,f,g,dp);
 
-    wire clk1s;
+    wire reset;
+    wire tick;           // count goes up on tick's posedge
     wire [7:0] leds;
     reg [3:0] counter = 0;
+
+    assign reset = ~btn_a;
+
 
     assign a = ~leds[0]; // active low (common anode)
     assign b = ~leds[1];
@@ -34,11 +38,12 @@ module display (
     assign g = ~leds[6];
     assign dp = ~leds[7];
 
-    reduceclock rc (clk, clk1s);
+    assign tick = ~btn_b;            // manual counting
+    //reduceclock rc (clk, tick);        // automatic counting
     bcd7seg     b7 (counter, leds);
 
-    always @(posedge clk1s or negedge reset) begin
-        if (!reset)
+    always @(posedge tick or posedge reset) begin
+        if (reset)
             counter <= 0;
         else
             counter <= counter + 4'd1;
