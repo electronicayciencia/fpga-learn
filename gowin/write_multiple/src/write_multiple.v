@@ -1,5 +1,5 @@
-/* Send multiple characters via diy-UART */
-/*
+/* Send multiple characters via diy-UART 
+
  Logic ann. config:
     FPGA PIN -> Channel -> Signal
     42  Ch6  serial
@@ -9,6 +9,7 @@
     11  Ch1  debug[3]
     10  Ch5  debug[4]
     46  Ch7  debug[5]
+
 */
 module multiple (
     input clk_24MHz, // main clock
@@ -80,6 +81,8 @@ assign debug[0] = clk_timer;
 assign debug[1] = clk_uart;
 assign debug[2] = start;
 assign debug[3] = busy;
-
+/* If you try to watch any of this signals, glitch vanishes */
+//assign debug[4] = idle;
+//assign debug[5] = last_byte;
 
 endmodule

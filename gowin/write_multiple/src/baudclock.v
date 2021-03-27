@@ -8,8 +8,8 @@ module baudclock (
     //localparam semiperiod = 32'd12000;    // 1000 Hz
     //localparam semiperiod = 32'd10000;    // 1200 Hz
     //localparam semiperiod = 16'd1250;     // 9600 Hz
-    localparam semiperiod = 16'd208;      // 57600 Hz
-    //localparam semiperiod = 16'd104;      // 115200 Hz
+    //localparam semiperiod = 16'd208;      // 57600 Hz
+    localparam semiperiod = 16'd104;      // 115200 Hz
 
     reg [15:0] counter = 0;
 
