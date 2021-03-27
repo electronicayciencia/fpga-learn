@@ -56,19 +56,25 @@ simpleUARTtx uart_mod(
 
 /* Logic */
 wire last_byte = (pointer == 3);
-wire idle = (!start & !busy);
+wire txing_byte = start | busy;
+wire txing_block = !last_byte | busy | start;
+reg restart = 0;
 
 always @(posedge clk_24MHz or posedge clk_timer) begin
-    if (clk_timer) begin
-        if (idle & last_byte) begin
+    // Async restart: just set restart flag and wait for next clock
+    // But don't allow to restart while in a transmission
+    if (clk_timer) restart <= !txing_block;
+
+    else begin
+        if (restart) begin
+            restart <= 0;
             pointer <= 0;
             start <= 1;
         end
-    end
 
-    else begin
-        if (start & busy) start <= 0;
-        if (idle & !last_byte) begin
+        else if (start & busy) start <= 0;
+
+        else if (!txing_byte & !last_byte) begin
             pointer <= pointer + 1'b1;
             start <= 1;
         end
@@ -77,12 +83,12 @@ always @(posedge clk_24MHz or posedge clk_timer) begin
 end
 
 
+
 assign debug[0] = clk_timer;
 assign debug[1] = clk_uart;
 assign debug[2] = start;
 assign debug[3] = busy;
-/* If you try to watch any of this signals, glitch vanishes */
-//assign debug[4] = idle;
-//assign debug[5] = last_byte;
+assign debug[4] = txing_byte;
+assign debug[5] = txing_block;
 
 endmodule
