@@ -54,10 +54,10 @@ simpleUARTtx uart_mod(
 );
 
 
-/* Logic */
+/* Main loop */
 wire last_byte = (pointer == 3);
 wire txing_byte = start | busy;
-wire txing_block = !last_byte | busy | start;
+wire txing_block = !last_byte | txing_byte;
 reg restart = 0;
 
 always @(posedge clk_24MHz or posedge clk_timer) begin
@@ -72,15 +72,18 @@ always @(posedge clk_24MHz or posedge clk_timer) begin
             start <= 1;
         end
 
-        else if (start & busy) start <= 0;
+        // Clear start flag once busy is set
+        if (start & busy) start <= 0;
 
-        else if (!txing_byte & !last_byte) begin
+        // When byte TX finish, increase counter
+        if (!txing_byte & !last_byte) begin
             pointer <= pointer + 1'b1;
             start <= 1;
         end
     end
 
 end
+
 
 
 
