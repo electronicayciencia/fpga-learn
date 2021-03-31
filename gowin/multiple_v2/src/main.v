@@ -18,9 +18,16 @@
 module main (
     input btn_a,
     input btn_b,
-    input sys_clk,
+    input clk_i,
     output [6:0] debug
 );
+
+    wire sys_clk; // slow clock for logic ann
+    clkdiv Clkdiv1(
+        .clk_i(clk_i),
+        .clk_o(sys_clk)
+    );
+
 
     wire restart;
     wire [3:0] address;
@@ -67,8 +74,8 @@ module main (
     );
 
     baudclock UARTClk(
-        .clki(sys_clk),
-        .clko(uart_clk)
+        .clk_i(sys_clk),
+        .clk_o(uart_clk)
     );
 
     simpleUARTtx UART1 (
@@ -82,11 +89,11 @@ module main (
 
 
     assign debug[0] = restart;
-    assign debug[1] = 0;
-    assign debug[2] = 0;
-    assign debug[3] = 0;
+    assign debug[1] = endflag;
+    assign debug[2] = uart_clk;
+    assign debug[3] = newbyte;
     assign debug[4] = serial;
-    assign debug[5] = 0;
-    assign debug[6] = 0;
+    assign debug[5] = busy;
+    assign debug[6] = sys_clk;
 
 endmodule

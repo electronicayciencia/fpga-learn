@@ -7,6 +7,7 @@
     <FileList>
         <File path="src/baudclock.v" type="file.verilog" enable="1"/>
         <File path="src/chgdetect.v" type="file.verilog" enable="1"/>
+        <File path="src/clkdiv.v.v" type="file.verilog" enable="1"/>
         <File path="src/counter.v" type="file.verilog" enable="1"/>
         <File path="src/high2pulse.v" type="file.verilog" enable="0"/>
         <File path="src/main.v" type="file.verilog" enable="1"/>

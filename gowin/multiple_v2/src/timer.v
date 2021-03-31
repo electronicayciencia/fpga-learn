@@ -4,10 +4,9 @@ module timer (
     output clko
 );
 
-    //localparam semiperiod = 32'd12000000;    // 0.5 Hz
-    //localparam semiperiod = 32'd1200000;    // 5 Hz
-    localparam semiperiod = 32'd120000;    // 50 Hz 
-    //localparam semiperiod = 32'd12000;    // 500 Hz
+
+    localparam semiperiod = 32'd60000;    // 50 Hz 
+
 
     reg [32:0] counter = 0;
 
