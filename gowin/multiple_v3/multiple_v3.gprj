@@ -9,6 +9,7 @@
         <File path="src/clkdiv.v" type="file.verilog" enable="1"/>
         <File path="src/clocks.v" type="file.verilog" enable="1"/>
         <File path="src/fsm.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_prom/gowin_prom.v" type="file.verilog" enable="1"/>
         <File path="src/main.v" type="file.verilog" enable="1"/>
         <File path="src/memory.v" type="file.verilog" enable="1"/>
         <File path="src/timer.v" type="file.verilog" enable="1"/>

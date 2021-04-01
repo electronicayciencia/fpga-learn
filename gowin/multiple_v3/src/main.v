@@ -28,6 +28,9 @@ module main (
     wire restart;  // timer clock
     wire uart_clk; // uart speed clock
 
+    wire gnd = 1'b0;
+    wire vdd = 1'b1;
+
     clocks Clocks1(
     .clk_i(clk_i),
     .clk_main(sys_clk),
@@ -40,11 +43,22 @@ module main (
     wire [3:0] address;
     wire [7:0] byte;
 
+
     memory Mem(
         .clk_i(sys_clk),
         .addr_i(address),
         .data_o(byte)
     );
+
+
+//    Gowin_pROM Mem(
+//        .dout(byte),   // [7:0] dout
+//        .clk(sys_clk), // clk
+//        .oce(vdd),     // output enable
+//        .ce(vdd),      // chip enable
+//        .reset(gnd),   // reset
+//        .ad(address)   // [3:0] address
+//    );
 
     simpleUARTtx UART1 (
         .data(byte),
