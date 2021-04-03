@@ -10,7 +10,6 @@ module memory (
 
     reg [7:0] mem [15:0];
 
-
     initial begin
         mem[0]  = "P";
         mem[1]  = "r";
@@ -21,7 +20,7 @@ module memory (
         mem[6]  = "d";
         mem[7]  = "o";
         mem[8]  = " ";
-        mem[9]  = "U"; // <- NULL
+        mem[9]  = "U";
         mem[10] = "A";
         mem[11] = "R";
         mem[12] = "T";

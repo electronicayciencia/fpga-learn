@@ -82,8 +82,9 @@ module main (
     assign debug[1] = sys_clk;
     assign debug[2] = uart_clk;
     assign debug[3] = serial;
-    assign debug[4] = 0;
-    assign debug[5] = 0;
-    assign debug[6] = 0;
+    assign debug[6:4] = address[2:0];
+    //assign debug[4] = 0;
+    //assign debug[5] = 0;
+    //assign debug[6] = 0;
 
 endmodule
