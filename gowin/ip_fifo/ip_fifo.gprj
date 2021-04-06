@@ -1,0 +1,18 @@
+<?xml version="1" encoding="UTF-8"?>
+<!DOCTYPE gowin-fpga-project>
+<Project>
+    <Template>FPGA</Template>
+    <Version>5</Version>
+    <Device name="GW1N-1" pn="GW1N-LV1QN48C6/I5">gw1n1-004</Device>
+    <FileList>
+        <File path="src/baudclock.v" type="file.verilog" enable="1"/>
+        <File path="src/clkdiv.v" type="file.verilog" enable="1"/>
+        <File path="src/clocks.v" type="file.verilog" enable="1"/>
+        <File path="src/fifo_sc/fifo_sc.v" type="file.verilog" enable="1"/>
+        <File path="src/timer.v" type="file.verilog" enable="1"/>
+        <File path="src/top.v" type="file.verilog" enable="1"/>
+        <File path="src/top_tb.v" type="file.verilog" enable="0"/>
+        <File path="src/uart.v" type="file.verilog" enable="1"/>
+        <File path="src/multiple_v3.cst" type="file.cst" enable="1"/>
+    </FileList>
+</Project>
