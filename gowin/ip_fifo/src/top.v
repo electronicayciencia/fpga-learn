@@ -25,93 +25,45 @@ module top (
     output [6:0] debug
 );
 
-    wire sys_clk;  // main clock
+    wire clk_main;  // main clock
     wire restart;  // timer clock
-    wire uart_clk; // uart speed clock
 
-    wire gnd = 1'b0;
-    wire vdd = 1'b1;
-
-
-    //assign uart_clk = clk_i;
-    
-    clocks Clocks1(
-    .clk_i(clk_i),
-    .clk_main(sys_clk),
-    .clk_uart_o(uart_clk),
-    .clk_timer_o(restart)
-    );
-    
-
-    wire fifo_clk;
-    wire fifo_wren; 
-    wire fifo_rden;
-    wire fifo_empty; 
-    wire fifo_full;
-
-    wire [7:0] fifo_din, 
-               fifo_dout;
-
-	fifo_sc Fifo1(
-		.Data(fifo_din),
-		.Clk(fifo_clk),
-		.WrEn(fifo_wren),
-		.RdEn(fifo_rden),
-		.Q(fifo_dout),
-        .Reset(1'b0),
-		.Empty(fifo_empty),
-		.Full(fifo_full)
-	);
-
-
-    reg  uart_start = 0;
-    wire uart_busy;
-    wire uart_out;
-
-    wire [7:0] uart_din;
-
-    simpleUARTtx UART1 (
-        .data(uart_din),
-        .start(uart_start),
-        .clk(uart_clk),
-        .busy(uart_busy),
-        .line(uart_out)
+//    assign clk_main = clk_i;
+    clkdiv Clkdiv1(
+        .clk_i(clk_i),
+        .clk_o(clk_main)
     );
 
-    assign fifo_clk   = uart_clk;
-    assign uart_din   = fifo_dout;
+    wire full;
+    wire [7:0] data;
+    wire wren;
+    wire serial;
 
-    reg pre_start = 0;  
-    assign fifo_rden = ~fifo_empty & ~uart_busy & ~pre_start;
+    fifo_uart FUART1(
+        .clk_i(clk_main),
+        .byte_i(data),
+        .wren_i(wren),
+        .serial_o(serial),
+        .full_o(full)
+    );
 
-    always @(posedge uart_clk) begin
-        // wait 1 clock for FIFO data
-        pre_start <= fifo_rden;
-        uart_start <= pre_start;
-    end
-       
-
-
-
- 
     /* Fill FIFO */
-
-    reg [7:0] counter = 0;
-    assign fifo_din = counter[7:0];
-    assign fifo_wren = ~|counter[7:4] & ~fifo_full;
-
-    always @ (posedge uart_clk)
-        counter <= counter + 1'b1;
-
+    reg [7:0] byte = 0;
+    assign data = byte[7:0];
+    assign wren = ~|byte[7:4] & ~full;
+ 
+    always @ (posedge clk_main)
+        byte <= byte + 1'b1;
 
 
 
-    assign debug[0] = uart_clk;
-    assign debug[1] = pre_start;
-    assign debug[2] = uart_start;
-    assign debug[3] = uart_out;
-    assign debug[4] = uart_busy;
-    assign debug[5] = fifo_rden;
+
+    assign debug[0] = clk_main;
+    assign debug[1] = 0;
+    assign debug[2] = 0;
+    assign debug[3] = serial;
+    assign debug[4] = full;
+    assign debug[5] = wren;
     assign debug[6] = 0;
 
 endmodule

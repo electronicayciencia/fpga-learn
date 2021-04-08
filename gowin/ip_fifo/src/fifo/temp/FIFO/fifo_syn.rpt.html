@@ -72,7 +72,7 @@ D:\Gowin\Gowin_V1.9.7.01Beta_GowinSynthesis-only\IDE\ipcore\FIFO\data\fifo_top.v
 </tr>
 <tr>
 <td class="label">Created Time</td>
-<td>Sat Apr 03 22:40:35 2021
+<td>Wed Apr 07 19:44:15 2021
 </td>
 </tr>
 <tr>
@@ -116,19 +116,15 @@ D:\Gowin\Gowin_V1.9.7.01Beta_GowinSynthesis-only\IDE\ipcore\FIFO\data\fifo_top.v
 </tr>
 <tr>
 <td class="label"><b>Register </b></td>
-<td>176</td>
+<td>40</td>
 </tr>
 <tr>
 <td class="label">&nbsp&nbsp&nbsp&nbspDFF</td>
 <td>40</td>
 </tr>
 <tr>
-<td class="label">&nbsp&nbsp&nbsp&nbspDFFE</td>
-<td>136</td>
-</tr>
-<tr>
 <td class="label"><b>LUT </b></td>
-<td>97</td>
+<td>15</td>
 </tr>
 <tr>
 <td class="label">&nbsp&nbsp&nbsp&nbspLUT2</td>
@@ -136,11 +132,11 @@ D:\Gowin\Gowin_V1.9.7.01Beta_GowinSynthesis-only\IDE\ipcore\FIFO\data\fifo_top.v
 </tr>
 <tr>
 <td class="label">&nbsp&nbsp&nbsp&nbspLUT3</td>
-<td>69</td>
+<td>3</td>
 </tr>
 <tr>
 <td class="label">&nbsp&nbsp&nbsp&nbspLUT4</td>
-<td>18</td>
+<td>2</td>
 </tr>
 <tr>
 <td class="label"><b>ALU </b></td>
@@ -158,18 +154,26 @@ D:\Gowin\Gowin_V1.9.7.01Beta_GowinSynthesis-only\IDE\ipcore\FIFO\data\fifo_top.v
 <td class="label">&nbsp&nbsp&nbsp&nbspINV</td>
 <td>1</td>
 </tr>
+<tr>
+<td class="label"><b>BSRAM </b></td>
+<td>1</td>
+</tr>
+<tr>
+<td class="label">&nbsp&nbsp&nbsp&nbspSDPB</td>
+<td>1</td>
+</tr>
 </table><br/>
 <h2><a name="utilization">Resource Utilization Summary</a></h2>
 <table class="summary_table">
 <tr>
 <td class="label">Logic</td>
-<td>113(98 LUTs, 15 ALUs) / 1152</td>
-<td>10%</td>
+<td>31(16 LUTs, 15 ALUs) / 1152</td>
+<td>3%</td>
 </tr>
 <tr>
 <td class="label">Register</td>
-<td>176 / 945</td>
-<td>19%</td>
+<td>40 / 945</td>
+<td>4%</td>
 </tr>
 <tr>
 <td class="label">&nbsp&nbsp--Register as Latch</td>
@@ -178,13 +182,13 @@ D:\Gowin\Gowin_V1.9.7.01Beta_GowinSynthesis-only\IDE\ipcore\FIFO\data\fifo_top.v
 </tr>
 <tr>
 <td class="label">&nbsp&nbsp--Register as FF</td>
-<td>176 / 945</td>
-<td>19%</td>
+<td>40 / 945</td>
+<td>4%</td>
 </tr>
 <tr>
 <td class="label">BSRAM</td>
-<td>0 / 4</td>
-<td>0%</td>
+<td>1 / 4</td>
+<td>25%</td>
 </tr>
 </table><br/><br/>
 <h1><a name="timing">Timing</a></h1>
@@ -307,7 +311,7 @@ D:\Gowin\Gowin_V1.9.7.01Beta_GowinSynthesis-only\IDE\ipcore\FIFO\data\fifo_top.v
 <td>0.981</td>
 <td>tINS</td>
 <td>RR</td>
-<td>148</td>
+<td>21</td>
 <td>WrClk_ibuf/O</td>
 </tr>
 <tr>
@@ -323,7 +327,7 @@ D:\Gowin\Gowin_V1.9.7.01Beta_GowinSynthesis-only\IDE\ipcore\FIFO\data\fifo_top.v
 <td>0.458</td>
 <td>tC2Q</td>
 <td>RF</td>
-<td>4</td>
+<td>2</td>
 <td>fifo_inst/Full_s0/Q</td>
 </tr>
 <tr>
@@ -332,15 +336,15 @@ D:\Gowin\Gowin_V1.9.7.01Beta_GowinSynthesis-only\IDE\ipcore\FIFO\data\fifo_top.v
 <td>tNET</td>
 <td>FF</td>
 <td>1</td>
-<td>fifo_inst/n15_s0/I0</td>
+<td>fifo_inst/n15_s1/I0</td>
 </tr>
 <tr>
 <td>3.315</td>
 <td>1.032</td>
 <td>tINS</td>
 <td>FF</td>
-<td>1</td>
-<td>fifo_inst/n15_s0/F</td>
+<td>2</td>
+<td>fifo_inst/n15_s1/F</td>
 </tr>
 <tr>
 <td>3.795</td>
@@ -454,7 +458,7 @@ D:\Gowin\Gowin_V1.9.7.01Beta_GowinSynthesis-only\IDE\ipcore\FIFO\data\fifo_top.v
 <td>0.981</td>
 <td>tINS</td>
 <td>RR</td>
-<td>148</td>
+<td>21</td>
 <td>WrClk_ibuf/O</td>
 </tr>
 <tr>
@@ -491,7 +495,7 @@ D:\Gowin\Gowin_V1.9.7.01Beta_GowinSynthesis-only\IDE\ipcore\FIFO\data\fifo_top.v
 <b>Synthesis completed successfully!</b><br/>
 Process took 0h:0m:2s realtime, 0h:0m:2s cputime
 <br/>
-Memory peak: 47.1MB
+Memory peak: 46.7MB
 </div><!-- content -->
 </div><!-- main_wrapper -->
 </body>
