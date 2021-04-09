@@ -7,10 +7,10 @@
     <FileList>
         <File path="src/baudclock.v" type="file.verilog" enable="1"/>
         <File path="src/clkdiv.v" type="file.verilog" enable="1"/>
-        <File path="src/clocks.v" type="file.verilog" enable="0"/>
         <File path="src/fifo-uart.v" type="file.verilog" enable="1"/>
         <File path="src/fifo/fifo.v" type="file.verilog" enable="1"/>
-        <File path="src/timer.v" type="file.verilog" enable="0"/>
+        <File path="src/memory.v" type="file.verilog" enable="1"/>
+        <File path="src/timer.v" type="file.verilog" enable="1"/>
         <File path="src/top.v" type="file.verilog" enable="1"/>
         <File path="src/top_tb.v" type="file.verilog" enable="0"/>
         <File path="src/uart.v" type="file.verilog" enable="1"/>

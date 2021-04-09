@@ -6,9 +6,9 @@ module timer (
 );
 
 
-    localparam semiperiod = 16'd60000;    // 50 Hz 
+    localparam semiperiod = 24'd600000;    // 5 Hz 
 
-    reg [15:0] counter = 0;
+    reg [23:0] counter = 0;
 
     always @(posedge clk_i) begin
         if (counter == semiperiod) begin
