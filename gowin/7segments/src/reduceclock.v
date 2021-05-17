@@ -1,13 +1,13 @@
 // Takes the input clock @24MHz and divides it in a counter
 module reduceclock (
-    input clk,
-    output slowclk);
+    input i_clk,
+    output o_clk);
 
     reg [24:0] counter;
 
-    assign slowclk = counter[23]; // approx 0.5s
+    assign o_clk = counter[23]; // approx 0.5s
 
-    always @(posedge clk) begin
+    always @(posedge i_clk) begin
         counter <= counter + 25'd1;
     end
 

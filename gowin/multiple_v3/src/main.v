@@ -18,10 +18,10 @@
     46  Ch7  debug[6]
 */
 module main (
-    input btn_a,
-    input btn_b,
-    input clk_i,
-    output [6:0] debug
+    input i_btn_a,
+    input i_btn_b,
+    input i_clk,
+    output [6:0] o_debug
 );
 
     wire sys_clk;  // main clock
@@ -32,10 +32,10 @@ module main (
     wire vdd = 1'b1;
 
     clocks Clocks1(
-    .clk_i(clk_i),
-    .clk_main(sys_clk),
-    .clk_uart_o(uart_clk),
-    .clk_timer_o(restart)
+        .i_clk(i_clk),
+        .o_clk_main(sys_clk),
+        .o_clk_uart(uart_clk),
+        .o_clk_timer(restart)
     );
 
     wire busy;
@@ -61,28 +61,28 @@ module main (
 //    );
 
     simpleUARTtx UART1 (
-        .data(byte),
-        .start(start),
-        .clk(uart_clk),
-        .busy(busy),
-        .line(serial)
+        .i_data(byte),
+        .i_start(start),
+        .i_clk(uart_clk),
+        .o_busy(busy),
+        .o_line(serial)
     );
 
     fsm FSM1 (
-        .clk_i(sys_clk),
-        .restart_i(restart),
-        .byte_i(byte),
-        .busy_i(busy),
-        .start_o(start),
-        .address_o(address)
+        .i_clk(sys_clk),
+        .i_restart(restart),
+        .i_byte(byte),
+        .i_busy(busy),
+        .o_start(start),
+        .o_address(address)
     );
 
    
-    assign debug[0] = restart;
-    assign debug[1] = sys_clk;
-    assign debug[2] = uart_clk;
-    assign debug[3] = serial;
-    assign debug[6:4] = address[2:0];
+    assign o_debug[0] = restart;
+    assign o_debug[1] = sys_clk;
+    assign o_debug[2] = uart_clk;
+    assign o_debug[3] = serial;
+    assign o_debug[6:4] = address[2:0];
     //assign debug[4] = 0;
     //assign debug[5] = 0;
     //assign debug[6] = 0;

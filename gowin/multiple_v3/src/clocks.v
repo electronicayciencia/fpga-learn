@@ -1,26 +1,26 @@
 // Different clocks
 module clocks(
-    input clk_i,
-    output clk_main,   // slow clock for logic ann
-    output clk_uart_o, // bauds
-    output clk_timer_o // restart timer
+    input  i_clk,
+    output o_clk_main, // slow clock for logic ann
+    output o_clk_uart, // bauds
+    output o_clk_timer // restart timer
 );
 
 clkdiv Clkdiv1(
-    .clk_i(clk_i),
-    .clk_o(clk_main)
+    .i_clk(i_clk),
+    .o_clk(o_clk_main)
 );
 
 /* Automatic restart */
 timer Timer1 (
-   .clk_i(clk_main),
-   .clk_o(clk_timer_o)
+   .i_clk(o_clk_main),
+   .o_clk(o_clk_timer)
 );
 
 
 baudclock UARTClk(
-    .clk_i(clk_main),
-    .clk_o(clk_uart_o)
+    .i_clk(o_clk_main),
+    .o_clk(o_clk_uart)
 );
 
 endmodule

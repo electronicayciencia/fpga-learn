@@ -1,7 +1,7 @@
-// Generate a proper clock signal for UART module from 24MHz input clock.
+// Generate clock signal for UART module from 24MHz input clock.
 module clock (
-    input clki,
-    output reg clko
+    input i_clk,
+    output reg o_clk
 );
 
     //localparam semiperiod = 32'd24000000; // period 2s (1s on, 1s off)
@@ -13,12 +13,12 @@ module clock (
 
     reg [15:0] counter = 0;
 
-    always @(posedge clki) begin
+    always @(posedge i_clk) begin
         counter <= counter + 1'b1;
 
         if (counter == semiperiod) begin
             counter <= 0;
-            clko <= ~clko;
+            o_clk <= ~o_clk;
         end
     end
 

@@ -11,21 +11,21 @@ module memory (
     reg [7:0] mem [15:0];
 
     initial begin
-        mem[0]  = "P";
-        mem[1]  = "r";
-        mem[2]  = "o";
-        mem[3]  = "b";
-        mem[4]  = "a";
-        mem[5]  = "n";
-        mem[6]  = "d";
-        mem[7]  = "o";
-        mem[8]  = " ";
-        mem[9]  = "U";
-        mem[10] = "A";
-        mem[11] = "R";
-        mem[12] = "T";
-        mem[13] = 0;
-        mem[14] = 0;
+        mem[0]  = "S";
+        mem[1]  = "i";
+        mem[2]  = "m";
+        mem[3]  = "p";
+        mem[4]  = "l";
+        mem[5]  = "e";
+        mem[6]  = " ";
+        mem[7]  = "U";
+        mem[8]  = "A";
+        mem[9]  = "R";
+        mem[10] = "T";
+        mem[11] = " ";
+        mem[12] = "E";
+        mem[13] = "y";
+        mem[14] = "C";
         mem[15] = 0;
     end
 

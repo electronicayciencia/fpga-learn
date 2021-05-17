@@ -7,6 +7,7 @@
     <FileList>
         <File path="src/7segments.v" type="file.verilog" enable="1"/>
         <File path="src/bcd7seg.v" type="file.verilog" enable="1"/>
+        <File path="src/dual_edge_counter.v" type="file.verilog" enable="1"/>
         <File path="src/reduceclock.v" type="file.verilog" enable="1"/>
         <File path="src/7segments.cst" type="file.cst" enable="1"/>
     </FileList>

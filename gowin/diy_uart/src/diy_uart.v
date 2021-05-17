@@ -11,14 +11,17 @@ module diy_uart (
     wire busy;
     reg [7:0] data = 0;
 
-    clock c(clk24MHz, baudclk);
+    clock c(
+        .i_clk(clk24MHz), 
+        .o_clk(baudclk)
+    );
 
     simpleUARTtx u1(
-        .data(data),
-        .start(~btn_a),
-        .clk(baudclk),
-        .busy(busy),
-        .line(serial)
+        .i_data(data),
+        .i_start(~btn_a),
+        .i_clk(baudclk),
+        .o_busy(busy),
+        .o_line(serial)
     );
 
     always @(negedge busy) begin
