@@ -1,0 +1,65 @@
+//Copyright (C)2014-2021 Gowin Semiconductor Corporation.
+//All rights reserved.
+//File Title: Wrapper pack file for instantiation
+//GOWIN Version: GowinSynthesis V1.9.7.03Beta
+//Created Time: Tue May 18 16:14:53 2021
+
+module and_gate_gowin_top (
+    a,
+    b,
+    o
+);
+input a;
+input b;
+output o;
+and_gate and_gate_ins (
+    .a(a),
+    .b(b),
+    .o(o)
+);
+endmodule
+
+//
+//Written by GowinSynthesis
+//Product Version "GowinSynthesis V1.9.7.03Beta"
+//Tue May 18 16:14:52 2021
+
+//Source file index table:
+//file0 "\D:/tmp/fpga_project/src/and_gate.v"
+`pragma protect begin_protected
+`pragma protect version=1
+`pragma protect author="default"
+`pragma protect author_info="default"
+`pragma protect encrypt_agent="Synplify encryptP1735.pl"
+`pragma protect encrypt_agent_info="Synplify encryptP1735.pl Version 1.1"
+
+`pragma protect encoding=(enctype="base64", line_length=76, bytes=256)
+`pragma protect key_keyowner="Synplicity",key_keyname="SYNP05_001",key_method="rsa"
+`pragma protect key_block
+Ifa8Da9xn2pNgydwL87p/uox5sQclTda8hkWA6pPaEEJwbqOTFrALBz8/oqkmoK8YE1kWU640JLJ
+e3xvFp4VDKb0CumWsvATA0bm1PpOwacOL3sL/jpv+g0oZyqZQ6YPD9Os/EkXAtJu+hzT+L8IIFdV
+c2T3BWtjrywe7Y3wBeupTJ1R9/hyc4vH3QCBdSkHPP/JnHFGA4Iez6KzRohqSdGWroD3b3pQUbA0
+DMJ6CHELc/8kJwpHXznVI4ffD2r0LkCdqFrULbHgc59AUsE4WGjc9HIipmn4XLvV7bE/mJ21/LHi
+6wotnjBqIlXcIj66RyU7A8jm3og3dqLQs+F9Ng==
+
+`pragma protect encoding=(enctype="base64", line_length=76, bytes=256)
+`pragma protect key_keyowner="GoWin",key_keyname="GoWin001",key_method="rsa"
+`pragma protect key_block
+tQMwMVRBKDRrs3aXCUTuRwPNVwzoJ6XBD6W0HJ6XGMnX0Z8OWAFVnK10WTTgjCqP2VftkxMY8bv6
+Ip/42OC1Y1eUim3kC3WtWpczyFF6VRxHa6giP4pZaV3s10HgQxtB52snm5VWgS6kEOwaTsnjYIu6
+mhv6+4CmcPDW9JuZP2InbaOPCT1+7A5ZAPLxcA1jQ4dzVjcGKscLsiZUlV/g2KBUFcxTprQTGBaG
+HMaj7ENjKZME+NZwoR0bQkfUV6mZL8gxrUaIlkJeSKWTCzsJQOuW559dCmHMEGM+jSN6cujxaSQa
+bZLi4e0qMytuBhlSb8+nTNb93Y8dKhASBLIKbQ==
+
+`pragma protect encoding=(enctype="base64", line_length=76, bytes=336)
+`pragma protect data_keyowner="default-ip-vendor"
+`pragma protect data_keyname="default-ip-key"
+`pragma protect data_method="aes128-cbc"
+`pragma protect data_block
+8FPDWssID3LSSZNWFe+P1/dXNzu+Dt9nJVV8MOPa1JhGHmL7x3UszS84WP9/k0jqxIFGn4pGzSxJ
+dqMnMdkZ+CiXRQtKq7DlGPEMoc2Jwf8lKCWuTHQd6Ks0wQ0dWCKYgZ++ODz88YL8rUAAE2T7gKO7
+WefkI+H553XfRQ7jbpgLXqfUvsCT2X2jTDMj5ihiB3hM3guKfofkX75tOqDmIMB7gvRc1i3zsp05
+snXPhm5aSrrWBIZAd+zwZOX3mpL+HkzSUWFLT54hG83eY9m5Y+wGux1jIKtmF7U4ToalQBgUq7IH
+EOugCHZk31NCUC+ou0zemLcErmEHfQ/rFqROhgUBtNZivaFCQT1Zea1Vd1CTQYsMMKQJjI9jciCU
+2PIUMRaYnfkfYxNgdQU0WLiN9wsDMGlBsdX2+5lviqE3s6VvWHHF6lUEUcc/3r9gODrt
+`pragma protect end_protected
