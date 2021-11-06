@@ -2,7 +2,7 @@ module vcounter (
     input hsync_i,          // horizontal counter reset
     output reg vsync_o,     // vertical sync pulse
     output reg vactive_o,   // vertical signal in active zone
-    output reg [11:0] lin_o // line number
+    output reg [8:0] lin_o  // line number
 );
 
 localparam vactive      = 272;

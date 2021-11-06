@@ -25,8 +25,8 @@ module top (
 wire vactive;
 wire hactive;
 
-wire [11:0] col;
-wire [11:0] lin;
+wire [8:0] col;
+wire [8:0] lin;
 
 assign LCD_DEN = vactive & hactive;
 
@@ -52,14 +52,14 @@ vcounter vcounter(
 );
 
 
+// CGA schema colors RGBI
+assign blue   = lin[5];
+assign green  = lin[6];
+assign red    = lin[7];
+assign i      = col[8];
 
-assign LCD_R = lin[4:0];
-assign LCD_G = 6'b000000;
-assign LCD_B = 5'b00000;
-
-//assign LCD_R = 5'b00000;
-//assign LCD_G = 6'b000000;
-//assign LCD_B = 5'b00000;
-
+assign LCD_R = { red,   i, red,   i, red };
+assign LCD_G = { green, i, green, i, green, i };
+assign LCD_B = { blue,  i, blue,  i, blue };
 
 endmodule

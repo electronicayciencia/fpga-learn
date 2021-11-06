@@ -2,13 +2,13 @@ module hcounter (
     input pxclk_i,          // pixel clock
     output reg hsync_o,     // horizontal sync pulse
     output reg hactive_o ,  // horizontal signal in active zone
-    output reg [11:0] col_o // column number
+    output reg [8:0] col_o // column number
 );
 
 localparam hactive      = 480;
-localparam hfront_porch = 8;
+localparam hfront_porch = 2;
 localparam hsync_len    = 41;
-localparam hback_porch  = 4;
+localparam hback_porch  = 2;
 
 localparam maxcount = hactive + hfront_porch + hback_porch + hsync_len - 1;
 
