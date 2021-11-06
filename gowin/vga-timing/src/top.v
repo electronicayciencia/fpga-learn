@@ -7,6 +7,7 @@ References:
  https://www.improwis.com/tables/video.webt
  https://www.kernel.org/doc/Documentation/devicetree/bindings/display/panel/panel-dpi.txt
  https://www.waveshare.com/w/upload/4/44/4.3inch-480x272-Touch-LCD-B-UserManual.pdf
+ https://en.wikipedia.org/wiki/Color_Graphics_Adapter
 
 */
 
@@ -51,15 +52,12 @@ vcounter vcounter(
     .lin_o     (lin)           // line number
 );
 
+cga cga(
+    .color_i   ({ col[8], lin[7], lin[6], lin[5] }),
+    .red_o     (LCD_R),
+    .green_o   (LCD_G),
+    .blue_o    (LCD_B)
+);
 
-// CGA schema colors RGBI
-assign blue   = lin[5];
-assign green  = lin[6];
-assign red    = lin[7];
-assign i      = col[8];
-
-assign LCD_R = { red,   i, red,   i, red };
-assign LCD_G = { green, i, green, i, green, i };
-assign LCD_B = { blue,  i, blue,  i, blue };
 
 endmodule
