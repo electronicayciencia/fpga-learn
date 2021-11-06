@@ -1,6 +1,6 @@
-module led (input btn, output led);
+module led (input i_btn, output o_led);
 
-    assign led = btn;
+    assign o_led = i_btn;
 
 endmodule
 

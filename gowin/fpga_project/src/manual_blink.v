@@ -1,10 +1,10 @@
 module led (input i_btn,
             output o_led);
 
-    reg o_led = 0;
+    reg led = 0;
+    assign o_led = led;
 
     always @(negedge i_btn)
-        o_led <= ~o_led;
-
+        led <= ~led;
 
 endmodule

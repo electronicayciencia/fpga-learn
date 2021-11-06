@@ -1,26 +1,16 @@
-//Copyright (C)2014-2021 Gowin Semiconductor Corporation.
+//Copyright (C)2014-2020 Gowin Semiconductor Corporation.
 //All rights reserved. 
 //File Title: Physical Constraints file
-//GOWIN Version: 1.9.7.03Beta
+//GOWIN Version: 1.9.7.01Beta
 //Part Number: GW1N-LV1QN48C6/I5
 //Device: GW1N-1
-//Created Time: Fri 05 21 18:25:05 2021
+//Created Time: Fri 05 28 19:56:53 2021
 
-//IO_LOC "o_debug[6]" 46;
-//IO_PORT "o_debug[6]" PULL_MODE=UP DRIVE=8;
-//IO_LOC "o_debug[5]" 10;
-//IO_PORT "o_debug[5]" PULL_MODE=UP DRIVE=8;
-//IO_LOC "o_debug[4]" 11;
-//IO_PORT "o_debug[4]" PULL_MODE=UP DRIVE=8;
-//IO_LOC "o_debug[3]" 45;
-//IO_PORT "o_debug[3]" PULL_MODE=UP DRIVE=8;
-//IO_LOC "o_debug[2]" 44;
-//IO_PORT "o_debug[2]" PULL_MODE=UP DRIVE=8;
-//IO_LOC "o_debug[1]" 43;
-//IO_PORT "o_debug[1]" PULL_MODE=UP DRIVE=8;
-//IO_LOC "o_debug[0]" 42;
-//IO_PORT "o_debug[0]" PULL_MODE=UP DRIVE=8;
-IO_LOC "i_clk" 35;
-IO_PORT "i_clk" PULL_MODE=UP;
-IO_LOC "o_led" 16;
-IO_PORT "o_led" PULL_MODE=UP;
+IO_LOC "o_led_b" 16;
+IO_PORT "o_led_b" PULL_MODE=UP DRIVE=8;
+IO_LOC "o_led_g" 18;
+IO_PORT "o_led_g" PULL_MODE=UP DRIVE=8;
+IO_LOC "o_led_r" 17;
+IO_PORT "o_led_r" PULL_MODE=UP DRIVE=8;
+IO_LOC "i_btn" 15;
+IO_PORT "i_btn" IO_TYPE=LVCMOS33 PULL_MODE=UP;

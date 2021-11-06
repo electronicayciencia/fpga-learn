@@ -1,6 +1,15 @@
-module led (input i_btn_a, i_btn_b,
+module led (input i_clk, i_reset,
             output o_led_r);
 
-assign o_led_r = i_btn_a & i_btn_b;
+reg count;
+
+always @(posedge i_clk | i_reset) begin
+    if (i_reset)
+        count <= 0;
+    else
+        count <= count + 1'b1;
+end
+
+
 
 endmodule
