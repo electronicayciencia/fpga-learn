@@ -9,6 +9,8 @@ References:
  https://www.waveshare.com/w/upload/4/44/4.3inch-480x272-Touch-LCD-B-UserManual.pdf
  https://en.wikipedia.org/wiki/Color_Graphics_Adapter
 
+8x8 bit font from:
+ https://github.com/dhepper/font8x8
 
 Full graphic mode:
   RGB565 = 16bit
@@ -38,12 +40,16 @@ module top (
     output LCD_DEN
 );
 
+assign vcc = 1'b1;
+assign gnd = 1'b0;
+
 wire [8:0] col;
 wire [8:0] lin;
 
 assign LCD_DEN = vactive & hactive;
 
 
+// VGA timing generator
 Gowin_rPLL pll(
     .clkin     (XTAL_IN),      // input clkin 24MHz
     .clkout    (),             // output clkout (not used)
@@ -64,24 +70,53 @@ vcounter vcounter(
     .lin_o     (lin)           // line number
 );
 
-/* 
-// CGA bars
+wire [3:0] rgbicolor = 7;
+wire [6:0] chr_ord = 4;
+
+// CGA color generator
 cga cga(
-    .color_i   ({ col[8], lin[7], lin[6], lin[5] }),
     .red_o     (LCD_R),
     .green_o   (LCD_G),
-    .blue_o    (LCD_B)
+    .blue_o    (LCD_B),
+    .color_i   ({ rgbicolor[3] & light, 
+                  rgbicolor[2] & light, 
+                  rgbicolor[1] & light, 
+                  rgbicolor[0] & light })
 );
-*/
 
-assign light = ~(col[3]^lin[3]);
 
-cga cga(
-    .color_i   ({ 1'b0, light, light, light }),
-    .red_o     (LCD_R),
-    .green_o   (LCD_G),
-    .blue_o    (LCD_B)
+
+wire [7:0] rom_output;
+reg [8:0] chrline = 0;
+
+wire [6:0] text_col = col[8:3];  // text mode block (line / col)
+wire [6:0] text_lin = lin[8:3];
+wire [2:0] text_sub_col = col[2:0]; // inner block position (sub line / sub col)
+wire [2:0] text_sub_lin = lin[2:0]; 
+
+wire [9:0] chrrom_addr = {chr_ord, text_sub_lin}; // 7bit + 3bit
+
+// 8x8 fixed font character generator
+chr_rom chr_rom(
+    .oce       (vcc),          //
+    .ce        (vcc),          //
+    .reset     (gnd),          // reset
+    .dout      (rom_output),   // data output [7:0]
+    .clk       (LCD_CLK),      // clock
+    .ad        (chrrom_addr)   // address line [9:0]
 );
+
+always @(posedge LCD_CLK) begin
+    if (text_sub_col == 0)
+        chrline <= rom_output;
+    else
+        // left pixel it the most significat bit 
+        chrline <= {chrline[6:0], 1'b0};
+end
+
+assign light = chrline[7];
+
+
 
 
 endmodule
