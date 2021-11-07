@@ -1,0 +1,15 @@
+[General]
+ipc_version=4
+file=chr_rom
+module=chr_rom
+target_device=gw1n1-004
+type=ram_prom
+version=1.0
+
+[Config]
+DEPTH=1024
+LANG=0
+MEM_FILE=../8x8font.mi
+READ=0
+RESET_MODE=true
+WIDTH=8
