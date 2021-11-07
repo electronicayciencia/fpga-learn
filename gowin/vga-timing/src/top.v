@@ -9,6 +9,21 @@ References:
  https://www.waveshare.com/w/upload/4/44/4.3inch-480x272-Touch-LCD-B-UserManual.pdf
  https://en.wikipedia.org/wiki/Color_Graphics_Adapter
 
+
+Full graphic mode:
+  RGB565 = 16bit
+  480*272*16 = 2088960 = 255kB ram
+  GW1N SRAM Capacity(bits): 72 K
+
+Text mode with 8x8 font and CGA color
+  480/8 = 60
+  272/8 = 34
+  16 colors: 4bit
+
+  60*34*4 =~ 8kbit
+
+
+
 */
 
 
@@ -22,9 +37,6 @@ module top (
     output LCD_CLK,
     output LCD_DEN
 );
-
-wire vactive;
-wire hactive;
 
 wire [8:0] col;
 wire [8:0] lin;
@@ -52,8 +64,20 @@ vcounter vcounter(
     .lin_o     (lin)           // line number
 );
 
+/* 
+// CGA bars
 cga cga(
     .color_i   ({ col[8], lin[7], lin[6], lin[5] }),
+    .red_o     (LCD_R),
+    .green_o   (LCD_G),
+    .blue_o    (LCD_B)
+);
+*/
+
+assign light = ~(col[3]^lin[3]);
+
+cga cga(
+    .color_i   ({ 1'b0, light, light, light }),
     .red_o     (LCD_R),
     .green_o   (LCD_G),
     .blue_o    (LCD_B)
