@@ -18,11 +18,15 @@ Full graphic mode:
   GW1N SRAM Capacity(bits): 72 K
 
 Text mode with 8x8 font and CGA color
-  480/8 = 60
-  272/8 = 34
-  16 colors: 4bit
+  Address lines:
+    480/8 = 60 horizontal blocks (6 bit)
+    272/8 = 34 vertical blocks (6 bit)
 
-  60*34*4 =~ 8kbit
+  Output width
+    16 color foreground: 4bit
+    16 color background: 4bit
+    128 characters: 7 bit (8 bit for the future)
+    Total: 16bits
 
 
 
@@ -40,8 +44,7 @@ module top (
     output LCD_DEN
 );
 
-assign vcc = 1'b1;
-assign gnd = 1'b0;
+
 
 wire [8:0] col;
 wire [8:0] lin;
@@ -70,53 +73,41 @@ vcounter vcounter(
     .lin_o     (lin)           // line number
 );
 
-wire [3:0] rgbicolor = 7;
-wire [6:0] chr_ord = 4;
+// Go to text mode
+wire [6:0] text_col = col[8:4];  // text mode block (line / col)
+wire [6:0] text_lin = lin[8:4];
+
+// Get character, foreground and background of this block from RAM
+
+
+wire [6:0] chr_ord = 7'h61;
+wire [3:0] rgbifront = 2;
+wire [3:0] rgbiback  = 4;
+
+// Draw the text in the screen
+wire [2:0] block_col = col[3:1]; // inner block position (sub line / sub col)
+wire [2:0] block_lin = lin[3:1]; 
+
+wire light; // pixel is on
+
+// 8x8 character tenerator
+textgen_8x8 textgen_8x8 (
+    .clk_i       (LCD_CLK),
+    .chr_ord_i   (chr_ord),    // character number (7bit, 0~128)
+    .block_col_i (block_col),  // block column (0~7)
+    .block_lin_i (block_lin),  // block line (0~7)
+    .px_o        (light)       // pixel mask, is on or off
+);
 
 // CGA color generator
 cga cga(
     .red_o     (LCD_R),
     .green_o   (LCD_G),
     .blue_o    (LCD_B),
-    .color_i   ({ rgbicolor[3] & light, 
-                  rgbicolor[2] & light, 
-                  rgbicolor[1] & light, 
-                  rgbicolor[0] & light })
+    .color_i   ({ rgbifront[3] & light | rgbiback[3] & ~light, 
+                  rgbifront[2] & light | rgbiback[2] & ~light, 
+                  rgbifront[1] & light | rgbiback[1] & ~light, 
+                  rgbifront[0] & light | rgbiback[0] & ~light })
 );
-
-
-
-wire [7:0] rom_output;
-reg [8:0] chrline = 0;
-
-wire [6:0] text_col = col[8:3];  // text mode block (line / col)
-wire [6:0] text_lin = lin[8:3];
-wire [2:0] text_sub_col = col[2:0]; // inner block position (sub line / sub col)
-wire [2:0] text_sub_lin = lin[2:0]; 
-
-wire [9:0] chrrom_addr = {chr_ord, text_sub_lin}; // 7bit + 3bit
-
-// 8x8 fixed font character generator
-chr_rom chr_rom(
-    .oce       (vcc),          //
-    .ce        (vcc),          //
-    .reset     (gnd),          // reset
-    .dout      (rom_output),   // data output [7:0]
-    .clk       (LCD_CLK),      // clock
-    .ad        (chrrom_addr)   // address line [9:0]
-);
-
-always @(posedge LCD_CLK) begin
-    if (text_sub_col == 0)
-        chrline <= rom_output;
-    else
-        // left pixel it the most significat bit 
-        chrline <= {chrline[6:0], 1'b0};
-end
-
-assign light = chrline[7];
-
-
-
 
 endmodule
