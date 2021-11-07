@@ -15,7 +15,7 @@ localparam maxcount = hactive + hfront_porch + hback_porch + hsync_len - 1;
 // must be blocking assignment, otherwise the column number starts by 1 not 0.
 assign hactive_o = col_o < hactive;
 
-always @(negedge pxclk_i) begin
+always @(negedge pxclk_i) begin // posedge not working
     if (col_o == maxcount)
         col_o <= 0;
     else
