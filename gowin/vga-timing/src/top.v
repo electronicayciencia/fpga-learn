@@ -49,17 +49,20 @@ module top (
 // VGA timing generator
 Gowin_rPLL pll(
     .clkin     (XTAL_IN),      // input clkin 24MHz
-    .clkout    (),             // output clkout (not used)
+    .clkout    (SYS_CLK),             // output clkout 92MHz
     .clkoutd   (LCD_CLK)       // pixel clock 9.2MHz
 );
 
 
+reg  [9:0] video_addr = 0;
+reg [15:0] video_data = 0;
+
 video video(
     .lcd_clk_i   (LCD_CLK),    // clock for LCD 9.2MHz
-    .vram_clk_i  (1'b0),          // clock for VRAM
-    .vram_cea_i  (1'b0),          // CEA for VRAM
-    .vram_ada_i  (10'b0),          // VRAM address for write [10:0]
-    .vram_din_i  (16'b0),          // VRAM data for write [15:0]
+    .vram_clk_i  (LCD_CLK),          // clock for VRAM
+    .vram_cea_i  (1'b1),          // CEA for VRAM
+    .vram_ada_i  (video_addr),          // VRAM address for write [10:0]
+    .vram_din_i  (video_data),          // VRAM data for write [15:0]
     .lcd_r_o     (LCD_R),
     .lcd_g_o     (LCD_G),
     .lcd_b_o     (LCD_B),
@@ -68,5 +71,26 @@ video video(
     .lcd_den_o   (LCD_DEN)
 );
 
+reg [31:0] counter = 0;
+
+reg [15:0] l = 16'h1; // Galois LFSR
+
+// fill video memory
+always @(posedge LCD_CLK) begin
+    counter <= counter + 1'b1;
+
+    if (counter[16]) begin
+        video_addr <= video_addr + 1'b1;
+        video_data <= l;
+        counter <= 0;
+    end
+
+    if (video_addr > 32*17) begin
+        video_addr <= 0;
+    end
+
+    l <= {l[14:0], l[15] ^ l[13] ^ l[12] ^ l[10]};
+
+end
 
 endmodule

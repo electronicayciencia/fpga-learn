@@ -60,7 +60,7 @@ text_ram text_ram(
     .ceb       (vcc),
     .resetb    (gnd),
     .cea       (vram_cea_i),
-    .reseta    (vcc),
+    .reseta    (gnd),
     .clka      (vram_clk_i),
     .clkb      (lcd_clk_i),
     .ada       (vram_ada_i),   // port A address [9:0]
