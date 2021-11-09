@@ -24,10 +24,10 @@ always @(posedge clk_i)
     color_attr <= color_i;
 
 
-assign blue  = fore_b & on_i | back_b & ~on_i; // blue color line
-assign green = fore_g & on_i | back_g & ~on_i; // green color line
-assign red   = fore_r & on_i | back_r & ~on_i; // red color line
-assign i     = fore_i & on_i | back_i & ~on_i; // intensifier color line
+wire blue  = fore_b & on_i | back_b & ~on_i; // blue color line
+wire green = fore_g & on_i | back_g & ~on_i; // green color line
+wire red   = fore_r & on_i | back_r & ~on_i; // red color line
+wire i     = fore_i & on_i | back_i & ~on_i; // intensifier color line
 
 // 00h => 00000000b
 // 55h => 01010101b  (intensifier bit)

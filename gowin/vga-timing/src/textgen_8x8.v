@@ -7,8 +7,8 @@ module textgen_8x8 (
     output px_o              // pixel is on or off
 );
 
-assign vcc = 1'b1;
-assign gnd = 1'b0;
+wire vcc = 1'b1;
+wire gnd = 1'b0;
 
 reg  [7:0] chrline = 0;
 wire [7:0] rom_output;
