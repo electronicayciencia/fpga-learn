@@ -15,7 +15,7 @@ References:
 Full graphic mode:
   RGB565 = 16bit
   480*272*16 = 2088960 = 255kB ram
-  GW1N SRAM Capacity(bits): 72 K
+  GW1N SRAM Capacity(bits): 72 K BSRAM+pROM
 
 Text mode with 8x8 font and CGA color
   Address lines:
@@ -98,24 +98,21 @@ assign gnd = 1'b0;
 wire [15:0] cell_content;// = 16'h4262;
 reg [6:0] chr_ord   = 0; // only 128 characters (7bit)
 reg [7:0] textattr  = 0;
-reg [3:0] rgbifront = 0;
-reg [3:0] rgbiback  = 0;
+//reg [3:0] rgbifront = 0;
+//reg [3:0] rgbiback  = 0;
 
 // Semi-Dual port RAM: 
 //  Port A supports write operation 
 //  and port B support read operation
 
-// pre-fetch next character while in last clock of the current one because rom generator is clocked 
-// but not text attrs because color output is direct logic
+// pre-fetch next character while in last clock of the current one
 wire [9:0] vram_addr = {text_row, text_pos+1'b1};
+reg [7:0] textattr_delay = 0; // character generator needs one more cycle than attrib
 always @(posedge LCD_CLK) begin
     if (col[3:1] == 3'b111) begin
         chr_ord   <= cell_content[6:0];
-        textattr  <= cell_content[15:8];
-    end
-    else if (col[3:1] == 3'b000) begin
-        rgbifront <= textattr[3:0];
-        rgbiback  <= textattr[7:4];
+        textattr_delay  <= cell_content[15:8];
+        textattr  <= textattr_delay;
     end
 end
 
@@ -155,13 +152,12 @@ textgen_8x8 textgen_8x8 (
 
 // CGA color generator
 cga cga(
+    .color_i   (textattr),     // irgb irgb (background, foreground) (sync)
+    .clk_i     (LCD_CLK),
+    .on_i      (light),        // pixel on (async)
     .red_o     (LCD_R),
     .green_o   (LCD_G),
-    .blue_o    (LCD_B),
-    .color_i   ({ rgbifront[3] & light | rgbiback[3] & ~light, 
-                  rgbifront[2] & light | rgbiback[2] & ~light, 
-                  rgbifront[1] & light | rgbiback[1] & ~light, 
-                  rgbifront[0] & light | rgbiback[0] & ~light })
+    .blue_o    (LCD_B)
 );
 
 endmodule
