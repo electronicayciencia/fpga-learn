@@ -2,8 +2,8 @@
 module textgen_8x8 (
     input clk_i,
     input [6:0] chr_ord_i,   // character number (7bit, 0~128)
-    input [2:0] block_col_i, // block column (0~7)
-    input [2:0] block_lin_i, // block line (0~7)
+    input [2:0] cell_col_i,  // cell column (0~7)
+    input [2:0] cell_lin_i,  // cell line (0~7)
     output px_o              // pixel is on or off
 );
 
@@ -12,7 +12,7 @@ assign gnd = 1'b0;
 
 reg  [7:0] chrline = 0;
 wire [7:0] rom_output;
-wire [9:0] chrrom_addr = {chr_ord_i, block_lin_i}; // 7bit + 3bit
+wire [9:0] chrrom_addr = {chr_ord_i, cell_lin_i}; // 7bit + 3bit
 
 // 8x8 fixed font character generator
 chr_rom chr_rom(
@@ -25,12 +25,11 @@ chr_rom chr_rom(
 );
 
 always @(posedge clk_i) begin
-    if (block_col_i == 0)
+    if (cell_col_i == 3'b000) // 
         chrline <= rom_output[7:0];
 end
 
-// left pixel is most significant bit
-// by column start by 0
-assign px_o = chrline[3'd7-block_col_i+:1];
+// left pixel is most significant bit but columns start by 0
+assign px_o = chrline[3'd7-cell_col_i+:1];
 
 endmodule
