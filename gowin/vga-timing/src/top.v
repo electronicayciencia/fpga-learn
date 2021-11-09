@@ -59,10 +59,10 @@ reg [15:0] video_data = 0;
 
 video video(
     .lcd_clk_i   (LCD_CLK),    // clock for LCD 9.2MHz
-    .vram_clk_i  (LCD_CLK),          // clock for VRAM
-    .vram_cea_i  (1'b1),          // CEA for VRAM
-    .vram_ada_i  (video_addr),          // VRAM address for write [10:0]
-    .vram_din_i  (video_data),          // VRAM data for write [15:0]
+    .vram_clk_i  (LCD_CLK),    // clock for VRAM
+    .vram_cea_i  (1'b0),       // Clock enable for VRAM
+    .vram_ada_i  (video_addr), // VRAM address for write [10:0]
+    .vram_din_i  (video_data), // VRAM data for write [15:0]
     .lcd_r_o     (LCD_R),
     .lcd_g_o     (LCD_G),
     .lcd_b_o     (LCD_B),
