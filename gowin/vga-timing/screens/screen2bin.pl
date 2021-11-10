@@ -39,10 +39,14 @@ my $counter = 0;
 my $t;
 while ($t = <$text_fh>) {
 	$t =~ s/\s+$//;
+	my $attr = <$attr_fh> || "";
+	
 	my $l = length($t);
 	
 	for (my $i = 0; $i < 2**$ram_col_bits; $i++) {
 		if ($i < $l) {
+			
+			# CHARACTER
 			my $numchar = ord(substr($t, $i, 1));
 			# Replace template characters
 			# @ => incremental 1 to 128
@@ -53,8 +57,37 @@ while ($t = <$text_fh>) {
 			elsif ($numchar == ord('~')) {
 				$numchar = 0x01;
 			}
-			push @ram_content, $default_attr * 256 + $numchar;
+			
+			# ATTRIBUTE
+			my $attrnum = $default_attr;
+			my $attrchr = ord(substr($attr, $i, 1)) || $default_attr;
+			# Foreground color is simple 0~F
+			if ($attrchr >= ord('0') and $attrchr <= ord('9')) {
+				$attrnum = $attrchr - ord('0');
+			}
+			elsif ($attrchr >= ord('A') and $attrchr <= ord('F')) {
+				$attrnum = $attrchr - ord('A') + 10;
+			}
+			# G
+			elsif ($attrchr == ord('G')) {
+				$attrnum = 11;
+			}# H
+			elsif ($attrchr == ord('H')) {
+				$attrnum = 10;
+			}
+			# Space is default attr
+			elsif ($attrchr == ord(' ')) {
+				$attrnum = $default_attr;
+			}
+			else {
+				printf(STDERR "Unkown attribute character: %c\n", $attrchr);
+				$attrnum = $default_attr;
+			}
+				
+			push @ram_content, $attrnum * 256 + $numchar;
 		}
+		
+		# All default
 		else {
 			push @ram_content, $default_attr * 256 + $default_text;
 		}
