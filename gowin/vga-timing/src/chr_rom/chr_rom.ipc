@@ -7,9 +7,9 @@ type=ram_prom
 version=1.0
 
 [Config]
-DEPTH=1024
+DEPTH=2048
 LANG=0
-MEM_FILE=../8x8font.mi
+MEM_FILE=../../fonts/cp437-8x8.mi
 READ=0
 RESET_MODE=true
 WIDTH=8

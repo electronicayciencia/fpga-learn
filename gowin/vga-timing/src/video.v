@@ -70,27 +70,27 @@ text_ram text_ram(
 );
 
 hcounter hcounter(
-    .pxclk_i   (lcd_clk_i),      // pixel clock
-    .hsync_o   (lcd_hsync_o),    // horizontal sync pulse
+    .pxclk_i   (lcd_clk_i),    // pixel clock
+    .hsync_o   (lcd_hsync_o),  // horizontal sync pulse
     .hactive_o (hactive),      // horizontal signal in active zone
     .col_o     (col)           // column number
 );
 
 vcounter vcounter(
-    .hsync_i   (lcd_hsync_o),    // horizontal clock
-    .vsync_o   (lcd_vsync_o),    // vertical sync pulse
+    .hsync_i   (lcd_hsync_o),  // horizontal clock
+    .vsync_o   (lcd_vsync_o),  // vertical sync pulse
     .vactive_o (vactive),      // vertical signal in active zone
     .lin_o     (lin)           // line number
 );
 
 
 // pre-fetch next character while in last clock of the current one
-reg [6:0] chr_ord   = 0; // only 128 characters (7bit)
+reg [7:0] chr_ord   = 0; // only 256 characters (8bit)
 reg [7:0] textattr  = 0;
 reg [7:0] textattr_delay = 0; // character generator needs one more cycle than attrib
 always @(posedge lcd_clk_i) begin
     if (col[3:1] == 3'b111) begin
-        chr_ord         <= vram_output[6:0];
+        chr_ord         <= vram_output[7:0];
         textattr_delay  <= vram_output[15:8];
         textattr        <= textattr_delay;
     end
@@ -101,10 +101,10 @@ end
 // Draw the text in the screen
 wire light; // pixel is on
 
-// 8x8 character tenerator
+// 8x8 character generator
 textgen_8x8 textgen_8x8 (
     .clk_i      (lcd_clk_i),
-    .chr_ord_i  (chr_ord),     // character number (7bit, 0~128)
+    .chr_ord_i  (chr_ord),     // character number (8bit, 0~256)
     .cell_col_i (cell_col),    // cell column (0~7)
     .cell_lin_i (cell_lin),    // cell line (0~7)
     .px_o       (light)        // pixel mask, is on or off

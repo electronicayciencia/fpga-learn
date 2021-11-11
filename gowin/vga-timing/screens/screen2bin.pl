@@ -68,6 +68,12 @@ while ($t = <$text_fh>) {
 			elsif ($attrchr >= ord('A') and $attrchr <= ord('F')) {
 				$attrnum = $attrchr - ord('A') + 10;
 			}
+			
+			# K~Z is pure background
+			elsif ($attrchr >= ord('K') and $attrchr <= ord('Z')) {
+				$attrnum += ($attrchr - ord('K')) * 16;
+			}
+			
 			# G
 			elsif ($attrchr == ord('G')) {
 				$attrnum = 11;

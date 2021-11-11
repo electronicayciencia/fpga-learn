@@ -26,9 +26,6 @@ Text mode with 8x8 font and CGA color
     Attributes: 16 color foreground + 16 color background: 8bit
     Text: 128 characters: 7 bit (8 bit for the future)
     
-
-
-
 */
 
 
@@ -44,8 +41,6 @@ module top (
 );
 
 
-
-
 // VGA timing generator
 Gowin_rPLL pll(
     .clkin     (XTAL_IN),      // input clkin 24MHz
@@ -54,13 +49,14 @@ Gowin_rPLL pll(
 );
 
 
+wire write_ram = 1'b0;
 reg  [9:0] video_addr = 0;
 reg [15:0] video_data = 0;
 
 video video(
     .lcd_clk_i   (LCD_CLK),    // clock for LCD 9.2MHz
     .vram_clk_i  (LCD_CLK),    // clock for VRAM
-    .vram_cea_i  (1'b0),       // Clock enable for VRAM
+    .vram_cea_i  (write_ram),  // Chip enable for VRAM
     .vram_ada_i  (video_addr), // VRAM address for write [10:0]
     .vram_din_i  (video_data), // VRAM data for write [15:0]
     .lcd_r_o     (LCD_R),
@@ -92,5 +88,6 @@ always @(posedge LCD_CLK) begin
     l <= {l[14:0], l[15] ^ l[13] ^ l[12] ^ l[10]};
 
 end
+
 
 endmodule
