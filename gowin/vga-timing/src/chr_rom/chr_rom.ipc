@@ -9,7 +9,7 @@ version=1.0
 [Config]
 DEPTH=2048
 LANG=0
-MEM_FILE=../../fonts/cp437-8x8.mi
+MEM_FILE=../../fonts/vga-rom.mi
 READ=0
 RESET_MODE=true
 WIDTH=8

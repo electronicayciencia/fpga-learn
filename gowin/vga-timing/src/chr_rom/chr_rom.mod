@@ -14,4 +14,4 @@
 -width 8
 -read_mode bypass
 -reset_mode sync
--init_file D:\Documentos\GitHub\fpga-learn\gowin\vga-timing\fonts\cp437-8x8.mi
+-init_file D:\Documentos\GitHub\fpga-learn\gowin\vga-timing\fonts\vga-rom.mi
