@@ -59,8 +59,8 @@ always @(posedge LCD_CLK)
 
 
 wire write_ram = 1'b0;
-reg  [9:0] video_addr = 0;
-reg [15:0] video_data = 0;
+reg [10:0] video_addr = 0;
+reg [7:0] video_data = 0;
 
 video video(
     .lcd_clk_i   (LCD_CLK),    // clock for LCD 9.2MHz
@@ -84,13 +84,13 @@ reg [15:0] l = 16'h1; // Galois LFSR
 always @(posedge LCD_CLK) begin
     counter <= counter + 1'b1;
 
-    if (counter[16]) begin
-        video_addr <= video_addr + 1'b1;
-        video_data <= l;
+    if (counter[9]) begin
+        video_addr <= video_addr + 2'd2;
+        video_data <= l[7:0];
         counter <= 0;
     end
 
-    if (video_addr > 32*17) begin
+    if (video_addr > 32*17*2) begin
         video_addr <= 0;
     end
 

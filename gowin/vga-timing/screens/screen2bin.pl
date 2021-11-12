@@ -2,7 +2,7 @@
 #
 # Combine text template and attrib template to create VRAM Memory Initialazation file.
 # Electronica y ciencia 09/11/2021
-#
+# ./screen2bin.pl template_text.bin template_attr.bin > ../src/text_ram.mi
 use strict;
 use warnings;
 
@@ -13,10 +13,12 @@ my $screen_cols = 30;
 # Memory address lines (bits)
 my $ram_row_bits = 5;
 my $ram_col_bits = 5;
+my $ram_attr_bits = 1;
+
 
 # Defaults
 my $default_text = 0x00;
-my $default_attr = 0x07;
+my $default_attr = 0x00;
 
 # Main array
 my @ram_content = ();
@@ -90,12 +92,14 @@ while ($t = <$text_fh>) {
 				$attrnum = $default_attr;
 			}
 				
-			push @ram_content, $attrnum * 256 + $numchar;
+			push @ram_content, $numchar;
+			push @ram_content, $attrnum 
 		}
 		
 		# All default
 		else {
-			push @ram_content, $default_attr * 256 + $default_text;
+			push @ram_content, $default_text;
+			push @ram_content, $default_attr;
 		}
 	}
 }
@@ -106,14 +110,14 @@ close $attr_fh;
 
 
 
-my $address_depth = 2**$ram_row_bits * 2**$ram_col_bits;
+my $address_depth = 2**$ram_row_bits * 2**$ram_col_bits * 2**$ram_attr_bits;
 
 print "#File_format=Hex\n";
 print "#Address_depth=$address_depth\n";
-print "#Data_width=16\n";
+print "#Data_width=8\n";
 
 for (my $addr = 0; $addr < $address_depth; $addr++) {
-	printf("%04x\n",
+	printf("%02x\n",
 		defined $ram_content[$addr] ? $ram_content[$addr] : 0);
 }
 

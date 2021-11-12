@@ -17,8 +17,8 @@ module video (
     input lcd_clk_i,      // clock for LCD 9.2MHz
     input vram_clk_i,     // clock for VRAM A port
     input vram_cea_i,     // CEA for VRAM
-    input  [9:0] vram_ada_i,     // VRAM address for write
-    input  [15:0] vram_din_i,   // VRAM data for write
+    input [10:0] vram_ada_i,    // VRAM address for write
+    input  [7:0] vram_din_i,   // VRAM data for write
     output [4:0] lcd_r_o,
     output [5:0] lcd_g_o,
     output [4:0] lcd_b_o,
