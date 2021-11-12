@@ -2,27 +2,24 @@
 // and pretend to drive a IRGB electron gun.
 // LCD input is R(5)G(6)B(5) actually.
 module cga (
-    input  [7:0] color_i,   // irgb irgb (background, foreground) (sync)
+    input  [7:0] color_i,   // irgb irgb (background, foreground) (async)
     input        on_i,      // pixel on (async)
-    input        clk_i,
     output [4:0] red_o,
     output [5:0] green_o,
     output [4:0] blue_o
 );
 
 wire [7:0] color_attr = color_i;
+
 wire back_i = color_attr[7];
 wire back_r = color_attr[6];
 wire back_g = color_attr[5];
 wire back_b = color_attr[4];
+
 wire fore_i = color_attr[3];
 wire fore_r = color_attr[2];
 wire fore_g = color_attr[1];
 wire fore_b = color_attr[0];
-
-/*always @(posedge clk_i)     FIXME
-    color_attr <= color_i;*/
-
 
 wire blue  = fore_b & on_i | back_b & ~on_i; // blue color line
 wire green = fore_g & on_i | back_g & ~on_i; // green color line
