@@ -1,3 +1,4 @@
+// According to LCD manual, it is falling-edge triggered.
 module hcounter (
     input pxclk_i,          // pixel clock
     output hactive_o ,      // horizontal signal in active zone
@@ -15,7 +16,7 @@ localparam maxcount = hactive + hfront_porch + hback_porch + hsync_len - 1;
 // must be blocking assignment, otherwise the column number starts by 1 not 0.
 assign hactive_o = col_o < hactive;
 
-always @(negedge pxclk_i) begin // posedge not working
+always @(negedge pxclk_i) begin
     if (col_o == maxcount)
         col_o <= 0;
     else

@@ -9,6 +9,7 @@
         <File path="src/chr_rom/chr_rom.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_rpll/gowin_rpll.v" type="file.verilog" enable="1"/>
         <File path="src/hcounter.v" type="file.verilog" enable="1"/>
+        <File path="src/shiftreg8.v" type="file.verilog" enable="0"/>
         <File path="src/text_ram/text_ram.v" type="file.verilog" enable="1"/>
         <File path="src/textgen_8x8.v" type="file.verilog" enable="1"/>
         <File path="src/top.v" type="file.verilog" enable="1"/>

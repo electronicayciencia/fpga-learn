@@ -11,9 +11,9 @@
 -file_type vlg
 -bram_b true
 -depth_0 1024
--depth_1 1024
+-depth_1 2048
 -width_0 16
--width_1 16
+-width_1 8
 -read_mode bypass
 -reset_mode sync
 -init_file D:\Documentos\GitHub\fpga-learn\gowin\vga-timing\src\text_ram.mi

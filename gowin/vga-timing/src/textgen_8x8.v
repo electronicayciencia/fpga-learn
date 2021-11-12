@@ -24,12 +24,15 @@ chr_rom chr_rom(
     .ad        (chrrom_addr)   // address line [9:0]
 );
 
-always @(posedge clk_i) begin
-    if (cell_col_i == 3'b000) // 
-        chrline <= rom_output[7:0];
+always @(negedge clk_i) begin
+    if (cell_col_i == 3'b000) 
+        chrline <= rom_output;
+    else
+        chrline <= {chrline[6:0], gnd};
 end
 
 // left pixel is most significant bit but columns start by 0
-assign px_o = chrline[3'd7-cell_col_i+:1];
+// Cannot use a shift register because one clock is not one cell pixel
+assign px_o = chrline[7];
 
 endmodule

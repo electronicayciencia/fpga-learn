@@ -49,13 +49,22 @@ Gowin_rPLL pll(
 );
 
 
+reg [7:0] clkcounter;
+assign REDUCED_LCD_CLK = clkcounter[0];
+
+always @(posedge LCD_CLK)
+    clkcounter <= clkcounter + 1'b1;
+
+
+
+
 wire write_ram = 1'b0;
 reg  [9:0] video_addr = 0;
 reg [15:0] video_data = 0;
 
 video video(
     .lcd_clk_i   (LCD_CLK),    // clock for LCD 9.2MHz
-    .vram_clk_i  (LCD_CLK),    // clock for VRAM
+    .vram_clk_i  (LCD_CLK),    // clock for VRAM A port
     .vram_cea_i  (write_ram),  // Chip enable for VRAM
     .vram_ada_i  (video_addr), // VRAM address for write [10:0]
     .vram_din_i  (video_data), // VRAM data for write [15:0]

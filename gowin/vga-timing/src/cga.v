@@ -10,7 +10,7 @@ module cga (
     output [4:0] blue_o
 );
 
-reg [7:0] color_attr = 0;
+wire [7:0] color_attr = color_i;
 wire back_i = color_attr[7];
 wire back_r = color_attr[6];
 wire back_g = color_attr[5];
@@ -20,8 +20,8 @@ wire fore_r = color_attr[2];
 wire fore_g = color_attr[1];
 wire fore_b = color_attr[0];
 
-always @(posedge clk_i)
-    color_attr <= color_i;
+/*always @(posedge clk_i)     FIXME
+    color_attr <= color_i;*/
 
 
 wire blue  = fore_b & on_i | back_b & ~on_i; // blue color line

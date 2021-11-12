@@ -15,7 +15,7 @@
 //----------------
 module video (
     input lcd_clk_i,      // clock for LCD 9.2MHz
-    input vram_clk_i,     // clock for VRAM
+    input vram_clk_i,     // clock for VRAM A port
     input vram_cea_i,     // CEA for VRAM
     input  [9:0] vram_ada_i,     // VRAM address for write
     input  [15:0] vram_din_i,   // VRAM data for write
@@ -37,10 +37,10 @@ wire [8:0] col; // X position in the screen
 wire [8:0] lin; // Y position in the screen
 
 // Text mode cells. Need to reduce text resolution to 30*17 to save memory
-wire [4:0] text_row = lin[8:4]; // vertical cell number (text row)
-wire [4:0] text_pos = col[8:4]; // horizontal cell number (text position)
-wire [2:0] cell_lin = lin[3:1]; // Y position inside the text cell
-wire [2:0] cell_col = col[3:1]; // X position inside the text cell
+wire [4:0] text_row = lin[7:3]; // vertical cell number (text row)
+wire [4:0] text_pos = col[7:3]; // horizontal cell number (text position)
+wire [2:0] cell_lin = lin[2:0]; // Y position inside the text cell
+wire [2:0] cell_col = col[2:0]; // X position inside the text cell
 
 // LCD signals
 wire vactive;
@@ -48,8 +48,8 @@ wire hactive;
 assign lcd_den_o = vactive & hactive;
 
 // Character, foreground and background of the cell from RAM
-wire [9:0] vram_addr = {text_row, text_pos+1'b1};
-wire [15:0] vram_output;
+reg [10:0] vram_addr = 0; // row5, col5, (attr:1 | chr:0)
+wire [7:0] vram_output;
 
 
 
@@ -66,7 +66,7 @@ text_ram text_ram(
     .ada       (vram_ada_i),   // port A address [9:0]
     .din       (vram_din_i),   // port A data input [15:0]
     .adb       (vram_addr),    // port B address [9:0]
-    .dout      (vram_output)   // data output port B irgb(4) IRGB(4) chr(8)
+    .dout      (vram_output)   // data output port B irgb(4)+IRGB(4), chr(8)
 );
 
 hcounter hcounter(
@@ -85,15 +85,22 @@ vcounter vcounter(
 
 
 // pre-fetch next character while in last clock of the current one
-reg [7:0] chr_ord   = 0; // only 256 characters (8bit)
+reg [7:0] chr_ord   = 0; // character number
 reg [7:0] textattr  = 0;
-reg [7:0] textattr_delay = 0; // character generator needs one more cycle than attrib
-always @(posedge lcd_clk_i) begin
-    if (col[3:1] == 3'b111) begin
-        chr_ord         <= vram_output[7:0];
-        textattr_delay  <= vram_output[15:8];
-        textattr        <= textattr_delay;
-    end
+always @(negedge lcd_clk_i) begin
+    case(cell_col)
+        3'b110:
+            vram_addr <= {text_row, text_pos+1'b1, 1'b0};
+
+        3'b111:
+            begin
+                chr_ord <= vram_output;
+                vram_addr <= vram_addr + 1'b1;
+            end
+
+        3'b000:
+            textattr <= vram_output;
+    endcase
 end
 
 
