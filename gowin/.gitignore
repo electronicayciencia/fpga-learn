@@ -1,3 +1,6 @@
 */impl/**
 *.user
 freq_counter
+vga-try2/**
+**/*_tmp.v
+*.bak

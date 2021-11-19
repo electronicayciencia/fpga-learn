@@ -12,7 +12,8 @@ wire gnd = 1'b0;
 
 reg  [7:0] chrline = 0;
 wire [7:0] rom_output;
-wire [10:0] chrrom_addr = {chr_ord_i, cell_lin_i}; // 7bit + 3bit
+wire [10:0] chrrom_addr; // 7bit + 3bit
+assign chrrom_addr = {chr_ord_i, cell_lin_i};
 
 // 8x8 fixed font character generator
 chr_rom chr_rom(
@@ -24,8 +25,17 @@ chr_rom chr_rom(
     .ad        (chrrom_addr)   // address line [9:0]
 );
 
-always @(negedge clk_i) begin
-    if (cell_col_i == 3'b000) 
+
+// Cycle:
+// 0: text position updated
+//    text position -> vram address
+// 1: vram address -> vram output
+//    vram output -> character
+//    character + cell line -> rom address
+// 2: rom address -> rom output
+// 3: rom output -> character line
+always @(posedge clk_i) begin
+    if (cell_col_i == 3'd3)
         chrline <= rom_output;
     else
         chrline <= {chrline[6:0], gnd};

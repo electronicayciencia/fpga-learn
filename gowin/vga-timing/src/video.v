@@ -33,7 +33,7 @@ wire gnd = 1'b0;
 
 
 // Graphic mode
-wire [8:0] col; // X position in the screen
+wire [9:0] col; // X position in the screen (only 8 bits used)
 wire [8:0] lin; // Y position in the screen
 
 // Text mode cells. 
@@ -44,16 +44,17 @@ wire [4:0] text_row = lin[8:4]; // vertical cell number (text row)
 wire [4:0] text_pos = col[8:4]; // horizontal cell number (text position)
 wire [2:0] cell_lin = lin[3:1]; // Y position inside the text cell
 wire [2:0] cell_col = col[3:1]; // X position inside the text cell
+
 // b) Divide clock for VRAM, and character ROM access.
-reg reduced_clock;
-always @(posedge lcd_clk_i)
-    reduced_clock <= reduced_clock + vcc;
-// Ideal way is to reduce pixel clock and timings. But it does not work on LCD.
+clkdiv clkdiv(
+    .clk_i  (lcd_clk_i),
+    .clk_o  (reduced_clock)
+);
 
 
-// Semi-Dual port RAM: 
+// Semi-Dual port RAM
 // Port A supports write operation and port B support read operation
-reg [10:0] vram_addr = 0; // row5, col5, (attr:1 | chr:0)
+wire [10:0] vram_addr;// = 0; // row5, col5, (attr:1 | chr:0)
 wire [7:0] vram_output;
 text_ram text_ram(
     .oce       (vcc),
@@ -62,7 +63,7 @@ text_ram text_ram(
     .cea       (vram_cea_i),
     .reseta    (gnd),
     .clka      (vram_clk_i),
-    .clkb      (reduced_clock),
+    .clkb      (lcd_clk_i),
     .ada       (vram_ada_i),   // port A address [9:0]
     .din       (vram_din_i),   // port A data input [15:0]
     .adb       (vram_addr),    // port B address [9:0]
@@ -72,42 +73,50 @@ text_ram text_ram(
 // Hardware LCD signals
 wire vactive;
 wire hactive;
-assign lcd_den_o = vactive & hactive;
+assign lcd_den = vactive & hactive;
+
+delay delay_h(
+    .clk  (lcd_clk_i),
+    .in   (lcd_hsync),
+    .out  (lcd_hsync_o)
+);
+
+delay delay_v(
+    .clk  (lcd_clk_i),
+    .in   (lcd_vsync),
+    .out  (lcd_vsync_o)
+);
+
+delay delay_en(
+    .clk  (lcd_clk_i),
+    .in   (lcd_den),
+    .out  (lcd_den_o)
+);
 
 hcounter hcounter(
     .pxclk_i   (lcd_clk_i),    // pixel clock
-    .hsync_o   (lcd_hsync_o),  // horizontal sync pulse
+    .hsync_o   (lcd_hsync),  // horizontal sync pulse
     .hactive_o (hactive),      // horizontal signal in active zone
-    .col_o     (col)           // column number
+    .x_o       (col)           // x pixel position
 );
 
 vcounter vcounter(
-    .hsync_i   (lcd_hsync_o),  // horizontal clock
-    .vsync_o   (lcd_vsync_o),  // vertical sync pulse
+    .hsync_i   (lcd_hsync),  // horizontal sync pulse
+    .clk_i     (lcd_clk_i),    // main clock
+    .vsync_o   (lcd_vsync),  // vertical sync pulse
     .vactive_o (vactive),      // vertical signal in active zone
-    .lin_o     (lin)           // line number
+    .y_o       (lin)           // y pixel position
 );
 
 
 // read character one clock early because character ROM is sync
 // read attributes (next mem position) on the next cycle
-reg [7:0] chr_ord   = 0; // character number
-reg [7:0] textattr  = 0;
-always @(negedge reduced_clock) begin
-    case(cell_col)
-        3'b110: // -2 clocks until next character row
-            vram_addr <= {text_row, text_pos+1'b1, 1'b0};
+wire [7:0] chr_ord; // character number
+reg [7:0] textattr  = 8'h17;
 
-        3'b111: // -1
-            begin
-                chr_ord   <= vram_output;
-                vram_addr <= vram_addr + 1'b1;
-            end
+assign vram_addr = {text_row, text_pos, 1'b0};
+assign chr_ord   = vram_output;
 
-        3'b000: // go!
-            textattr <= vram_output;
-    endcase
-end
 
 
 
@@ -116,7 +125,7 @@ wire light; // pixel is on
 
 // 8x8 character generator
 textgen_8x8 textgen_8x8 (
-    .clk_i      (reduced_clock),
+    .clk_i      (lcd_clk_i),
     .chr_ord_i  (chr_ord),     // character number (8bit, 0~256)
     .cell_col_i (cell_col),    // cell column (0~7)
     .cell_lin_i (cell_lin),    // cell line (0~7)

@@ -1,29 +1,31 @@
 module vcounter (
     input hsync_i,          // horizontal counter reset
-    output vactive_o,       // vertical signal in active zone
+    input clk_i,            // main clock
+    output reg vactive_o,   // vertical signal in active zone
     output reg vsync_o,     // vertical sync pulse
-    output reg [8:0] lin_o  // line number (0 ~ vactive-1)
+    output reg [8:0] y_o = 0   // y position
 );
 
 localparam vactive      = 272;
 localparam vfront_porch = 4;
 localparam vsync_len    = 10;
-localparam vback_porch  = 2;
+localparam vback_porch  = 4;
 
-localparam maxcount = vactive + vfront_porch + vback_porch + vsync_len - 1;
+localparam maxcount  = vactive + vfront_porch + vback_porch + vsync_len;
+localparam syncstart = vactive + vback_porch;
+localparam syncend   = syncstart + vsync_len;
 
-assign vactive_o = lin_o < (vactive);
+reg [8:0] counter = 0;
 
-always @(negedge hsync_i) begin
-    if (lin_o == maxcount)
-        lin_o <= 0;
+always @(posedge hsync_i) begin
+    if (counter == maxcount - 1)
+        counter <= 0;
     else
-        lin_o <= lin_o + 1'b1;
+        counter <= counter + 1'b1;
 
-    // prevent glitches
-    vsync_o <= ~(lin_o > (vactive + vfront_porch) & 
-                 lin_o < (vactive + vfront_porch + vsync_len));
-
+    y_o       <= counter;
+    vactive_o <= (counter < vactive);
+    vsync_o   <= ~(counter >= syncstart & counter < syncend);
 end
 
 endmodule

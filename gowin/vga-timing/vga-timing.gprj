@@ -7,6 +7,8 @@
     <FileList>
         <File path="src/cga.v" type="file.verilog" enable="1"/>
         <File path="src/chr_rom/chr_rom.v" type="file.verilog" enable="1"/>
+        <File path="src/clkdiv.v" type="file.verilog" enable="1"/>
+        <File path="src/delay.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_rpll/gowin_rpll.v" type="file.verilog" enable="1"/>
         <File path="src/hcounter.v" type="file.verilog" enable="1"/>
         <File path="src/shiftreg8.v" type="file.verilog" enable="0"/>

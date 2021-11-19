@@ -1,9 +1,9 @@
 // According to LCD manual, it is falling-edge triggered.
 module hcounter (
     input pxclk_i,          // pixel clock
-    output hactive_o ,      // horizontal signal in active zone
+    output reg hactive_o ,  // horizontal signal in active zone
     output reg hsync_o,     // horizontal sync pulse
-    output reg [8:0] col_o  // column number (0 ~ hactive-1)
+    output reg [9:0] x_o = 0 // pixel column (0 ~ hactive-1)
 );
 
 localparam hactive      = 480;
@@ -11,21 +11,22 @@ localparam hfront_porch = 2;
 localparam hsync_len    = 41;
 localparam hback_porch  = 2;
 
-localparam maxcount = hactive + hfront_porch + hback_porch + hsync_len - 1;
+localparam maxcount  = hactive + hfront_porch + hback_porch + hsync_len;
+localparam syncstart = hactive + hback_porch;
+localparam syncend   = syncstart + hsync_len;
 
-// must be blocking assignment, otherwise the column number starts by 1 not 0.
-assign hactive_o = col_o < hactive;
+reg [9:0] counter = 0;
 
-always @(negedge pxclk_i) begin
-    if (col_o == maxcount)
-        col_o <= 0;
+always @(posedge pxclk_i) begin
+    if (counter == maxcount - 1)
+        counter <= 0;
     else
-        col_o <= col_o + 1'b1;
+        counter <= counter + 1'b1;
 
-    // prevent glitches
-    hsync_o <= ~(col_o > (hactive + hfront_porch) & 
-                 col_o < (hactive + hfront_porch + hsync_len));
-
+    x_o       <= counter;
+    hactive_o <= (counter < hactive);
+    hsync_o   <= ~(counter >= syncstart & counter < syncend);
 end
+
 
 endmodule
