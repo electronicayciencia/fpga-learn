@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 
-# Replace a string in a file
+# Replace a string in a bunch of files
 # 21/12/2021
-# for /r %i in (..\IDE\bin\*.*) do python patch.py %i
+#
 
 # Beware CRLF vs LF. Always LF.
 
+import os
 import sys
 from shutil import copyfile
 
-def backup(filename, suffix = ".bak"):
+def backup(filename, suffix):
     """Copy the original filename to filename.bak."""
     copyfile(filename, filename+suffix)
 
@@ -19,7 +20,7 @@ def searchkey(filename, bstr):
     with open(filename, 'rb') as f:
         s = f.read()
 
-    return s.find(bstr)
+    return bstr in s
 
 
 def replace(filename, bsrc, bdst):
@@ -28,7 +29,7 @@ def replace(filename, bsrc, bdst):
         s = f.read()
 
     s = s.replace(bsrc, bdst)
-    
+
     with open(filename,"wb") as f:
         f.write(s)
 
@@ -47,21 +48,26 @@ def read_key(filename):
 def main():
     old = read_key("pubkey_orig.pem")
     new = read_key("pubkey_new.pem")
+    back_suffix = ".bak"
 
     if len(sys.argv) < 2:
-        print("Usage: {} filename.exe".format(sys.argv[0]))
+        print("Usage: {} software_path".format(sys.argv[0]))
         exit(1)
 
-    filename = sys.argv[1]
+    workdir = sys.argv[1]
 
-    print("Analizando '{}'...".format(filename))
+    for root, dirs, files in os.walk(workdir):
+        for file in files:
+            if back_suffix in file:
+                continue
 
-    if searchkey(filename, old):
-        print("Clave pública encontrada en '{}'. Reemplazando.".format(filename))
-        #backup(filename)
-        replace(filename, old, new)
-    else:
-        print("Clave no encontrada.")
+            filename = root + os.sep + file
+            #print("Analizando " + filename)
+
+            if searchkey(filename, old):
+                print("Clave pública encontrada en '{}'.".format(filename))
+                backup(filename, back_suffix)
+                replace(filename, old, new)
 
 
 if __name__ == "__main__":
