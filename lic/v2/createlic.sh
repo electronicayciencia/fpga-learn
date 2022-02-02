@@ -1,3 +1,4 @@
+MAC=$(getmac -FO CSV | head -2 | tail -1 | cut -d '"' -f 2 | tr -d '-')
 LIC="#---------------------------------------------------------------
 # LICENSE
 #
@@ -6,7 +7,7 @@ LIC="#---------------------------------------------------------------
 
 MODE = NODELOCK
 TYPE = STD
-HOST_ID = xxxxxxxxxxxx
+HOST_ID = $MAC
 EXP_DATE = 2050-10-26
 "
 
